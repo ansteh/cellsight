@@ -60,7 +60,6 @@ const SheetCube = (sheets) => {
 
   let getTitles = () => {
     return _.reduce(sheets, (titles, sheet) => {
-      //return _.uniqBy(_.concat(titles, sheet.getTitles()), x => x);
       return _.chain(titles)
         .concat(sheet.getTitles())
         .without('')

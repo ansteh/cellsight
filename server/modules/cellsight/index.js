@@ -52,10 +52,10 @@ const Rows = (rows) => {
 };
 
 const SheetCube = (sheets) => {
-  let findRowsByColumnTitleThatIncludesText = (columnTitle, text) => {
-    return Rows(_.map(sheets, sheet => {
-      return sheet.findRowByColumnTitleThatIncludesText(columnTitle, text);
-    }));
+  let findRows = (columnTitle, text) => {
+    return Rows(_.reduce(sheets, (all, sheet) => {
+      return _.concat(all, sheet.findRows(columnTitle, text));
+    }, []));
   };
 
   let getTitles = () => {
@@ -69,7 +69,7 @@ const SheetCube = (sheets) => {
   };
 
   return {
-    findRowsByColumnTitleThatIncludesText: findRowsByColumnTitleThatIncludesText,
+    findRows: findRows,
     getTitles: getTitles
   };
 };

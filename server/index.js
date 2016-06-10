@@ -19,7 +19,7 @@ module.exports = (server) => {
 
 
       socket.on('find-rows', (options) => {
-        let rows = cube.findRowsByColumnTitleThatIncludesText(options.columnTitle, options.text);
+        let rows = cube.findRows(options.columnTitle, options.text);
         let variations = rows.getVariationsOfColumn(options.columnTitle);
 
         socket.emit('find-rows', {

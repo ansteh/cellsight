@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "bluebird": "^3.4.0",
-    "dockin": "0.0.2",
+    "dockin": "0.0.3",
     "express": "^4.13.4",
     "lodash": "^4.11.2",
     "socket.io": "^1.4.6"

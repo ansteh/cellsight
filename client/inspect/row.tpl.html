@@ -1,0 +1,21 @@
+<div layout="row">
+  <md-input-container style="margin-right: 10px;">
+    <label>Size</label>
+    <md-select ng-model="title">
+      <md-option ng-repeat="option in titles" value="{{ option }}">{{ option }}</md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Suchwort für Zeile</label>
+    <input md-maxlength="30" required md-no-asterisk name="description" ng-model="text">
+    <!--<div ng-messages="projectForm.description.$error">
+      <div ng-message="required">This is required.</div>
+      <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+    </div>-->
+  </md-input-container>
+  <md-input-container class="md-block">
+    <md-button ng-click="findRows()" ng-disabled="!text || !title" class="md-raised md-primary">Show</md-button>
+  </md-input-container>
+</div>
+
+<pre>{{ variations | json }}</pre>

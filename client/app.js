@@ -4,7 +4,7 @@ app.factory('Socket', function(){
   return io();
 });
 
-app.factory('User', function(Socket){
+app.factory('Cellsight', function(Socket){
   var events = (function(){
     var topics = {};
     var hOP = topics.hasOwnProperty;
@@ -35,20 +35,61 @@ app.factory('User', function(Socket){
     //events.publish('/lights', lights);
   });
 
+  Socket.emit('titles');
+
+  Socket.on('titles', function(res){
+    //console.log(res);
+    events.publish('/titles', res);
+  });
+
   return {
     onVerify: function(cb){
       events.subscribe('/verify', cb);
+    },
+    onTitles: function(cb){
+      events.subscribe('/titles', cb);
     }
   };
 });
 
-app.directive('login', function(User){
+app.directive('login', function(Cellsight){
   return {
     restrict: 'E',
-    template: '<div>test</div>',
+    template: '<div></div>',
     scope: {},
     controller: function($scope){
 
+    }
+  };
+});
+
+app.directive('inspectRow', function(Cellsight, Socket){
+  return {
+    restrict: 'E',
+    templateUrl: 'client/inspect/row.tpl.html',
+    scope: {},
+    controller: function($scope){
+      $scope.titles = [];
+      $scope.title;
+      $scope.text;
+      $scope.variations = [];
+
+      Cellsight.onTitles(function(titles){
+        $scope.titles = titles;
+        $scope.$apply();
+      });
+
+      $scope.findRows = function(){
+        Socket.emit('find-rows', {
+          columnTitle: $scope.title,
+          text: $scope.text
+        });
+      };
+
+      Socket.on('find-rows', function(res){
+        $scope.variations = res.variations;
+        $scope.$apply();
+      });
     }
   };
 });

@@ -1,22 +1,44 @@
 <div layout="row">
   <md-input-container style="margin-right: 10px;">
-    <label>Size</label>
+    <label>Suchspalte</label>
     <md-select ng-model="title">
       <md-option ng-repeat="option in titles" value="{{ option }}">{{ option }}</md-option>
     </md-select>
   </md-input-container>
   <md-input-container class="md-block">
-    <label>Suchwort für Zeile</label>
-    <input md-maxlength="30" md-no-asterisk name="description" ng-model="text">
+    <label>Suchbegriff</label>
+    <input md-no-asterisk name="description" ng-model="text">
+    <!--<input md-maxlength="30" md-no-asterisk name="description" ng-model="text">
     <!--<div ng-messages="projectForm.description.$error">
       <div ng-message="required">This is required.</div>
       <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
     </div>-->
   </md-input-container>
   <md-input-container class="md-block">
-    <!--<md-button ng-click="findRows()" ng-disabled="!text || !title" class="md-raised md-primary">Show</md-button>-->
-    <md-button ng-click="findRows()" class="md-raised md-primary">Show</md-button>
+    <md-button ng-click="findRows()" ng-disabled="!title" class="md-raised md-primary">Show</md-button>
   </md-input-container>
 </div>
 
-<pre>{{ variations | json }}</pre>
+<div layout="row" ng-show="variations.length > 0">
+  <md-input-container flex class="md-block">
+    <md-button ng-click="hideInactives = !hideInactives" class="md-raised md-primary">Verstecken</md-button>
+  </md-input-container>
+
+  <md-input-container flex class="md-block">
+    <md-button ng-click="activate()" class="md-raised md-primary">Alle aktevieren</md-button>
+  </md-input-container>
+
+  <md-input-container flex class="md-block">
+    <md-button ng-click="deactivate()" class="md-raised md-primary">Alle deaktivieren</md-button>
+  </md-input-container>
+</div>
+<!--<pre>{{ variations | json }}</pre>-->
+<md-list>
+  <md-list-item class="md-2-line" ng-repeat="variation in variations" ng-hide="hideInactives && !variation.active">
+    <md-checkbox ng-model="variation.active"></md-checkbox>
+    <div class="md-list-item-text">
+      <!--<h3>{{item.title}}</h3>-->
+      <p>{{ variation.text }}</p>
+    </div>
+  </md-list-item>
+</md-list>

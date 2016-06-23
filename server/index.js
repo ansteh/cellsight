@@ -28,6 +28,16 @@ module.exports = (server) => {
         });
       });
 
+      socket.on('get-rows', (options) => {
+        let rows = cube.findRows(options.columnTitle, options.text);
+        let variations = rows.getVariationsOfColumn(options.columnTitle);
+
+        socket.emit('find-rows', {
+          req: options,
+          variations: variations
+        });
+      });
+
     });
 
   });

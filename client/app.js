@@ -71,7 +71,7 @@ app.directive('inspectRow', function(Cellsight, Socket){
     controller: function($scope){
       $scope.titles = [];
       $scope.title;
-      $scope.text;
+      $scope.text = '';
       $scope.variations = [];
 
       Cellsight.onTitles(function(titles){
@@ -87,9 +87,47 @@ app.directive('inspectRow', function(Cellsight, Socket){
       };
 
       Socket.on('find-rows', function(res){
-        $scope.variations = res.variations;
+        $scope.variations = _.map(res.variations, function(text) {
+          return {
+            active: false,
+            text: text
+          };
+        });
+
+        $scope.hideInactives = false;
         $scope.$apply();
       });
+
+      $scope.getRows = function(){
+        Socket.emit('find-rows', {
+          columnTitle: $scope.title,
+          matches: _.chain($scope.variations)
+            .filter(function(variation) {
+              return variation.active;
+            })
+            .map(function(variation) {
+              return variation.text;
+            })
+            .value()
+        });
+      };
+
+      Socket.on('get-rows', function(res){
+        console.log(res);
+        $scope.$apply();
+      });
+
+      $scope.activate = function() {
+        _.forEach($scope.variations, function(variation) {
+          variation.active = true;
+        });
+      };
+
+      $scope.deactivate = function() {
+        _.forEach($scope.variations, function(variation) {
+          variation.active = false;
+        });
+      };
     }
   };
 });

@@ -5,6 +5,7 @@ const cellsight = require('./modules/cellsight');
 module.exports = (server) => {
   cellsight.getCube().then(cube => {
     const io = socketio(server);
+    let titles = cube.getTitles();
 
     io.on('connection', function(socket){
 
@@ -13,7 +14,7 @@ module.exports = (server) => {
       });
 
       socket.on('titles', function(res){
-        socket.emit('titles', cube.getTitles());
+        socket.emit('titles', titles);
       });
 
 
@@ -30,11 +31,10 @@ module.exports = (server) => {
 
       socket.on('get-rows', (options) => {
         let rows = cube.findRows(options.columnTitle, options.text);
-        let variations = rows.getVariationsOfColumn(options.columnTitle);
 
-        socket.emit('find-rows', {
+        socket.emit('get-rows', {
           req: options,
-          variations: variations
+          rows: rows.getTable(titles)
         });
       });
 

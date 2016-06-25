@@ -1,4 +1,6 @@
-<div layout="row">
+<br>
+
+<div layout="row" layout-align="center">
   <md-input-container style="margin-right: 10px;">
     <label>Suchspalte</label>
     <md-select ng-model="title">
@@ -19,7 +21,11 @@
   </md-input-container>
 </div>
 
-<div layout="row" ng-show="variations.length > 0">
+<div ng-show="loading" layout="row" layout-align="center center">
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+<!--<div layout="row" ng-show="variations.length > 0">
   <md-input-container flex class="md-block">
     <md-button ng-click="hideInactives = !hideInactives" class="md-raised md-primary">Verstecken</md-button>
   </md-input-container>
@@ -32,13 +38,14 @@
     <md-button ng-click="deactivate()" class="md-raised md-primary">Alle deaktivieren</md-button>
   </md-input-container>
 </div>
-<!--<pre>{{ variations | json }}</pre>-->
+
 <md-list>
   <md-list-item class="md-2-line" ng-repeat="variation in variations" ng-hide="hideInactives && !variation.active">
     <md-checkbox ng-model="variation.active"></md-checkbox>
     <div class="md-list-item-text">
-      <!--<h3>{{item.title}}</h3>-->
       <p>{{ variation.text }}</p>
     </div>
   </md-list-item>
-</md-list>
+</md-list>-->
+
+<content ng-show="rows" titles="titles" rows="rows"></content>

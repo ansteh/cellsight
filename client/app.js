@@ -66,7 +66,7 @@ app.directive('login', function(Cellsight){
 app.directive('inspectRow', function(Cellsight, Socket){
   return {
     restrict: 'E',
-    templateUrl: 'client/inspect/row.tpl.html',
+    templateUrl: 'client/inspect/menu.tpl.html',
     scope: {},
     controller: function($scope){
       $scope.titles = [];
@@ -75,6 +75,7 @@ app.directive('inspectRow', function(Cellsight, Socket){
       $scope.variations = [];
 
       Cellsight.onTitles(function(titles){
+        console.log(titles.length);
         $scope.titles = titles;
         $scope.$apply();
       });
@@ -95,25 +96,31 @@ app.directive('inspectRow', function(Cellsight, Socket){
         });
 
         $scope.hideInactives = false;
+        $scope.rows = undefined;
+        $scope.loading = true;
         $scope.$apply();
+        $scope.getRows();
       });
 
       $scope.getRows = function(){
-        Socket.emit('find-rows', {
+        Socket.emit('get-rows', {
           columnTitle: $scope.title,
-          matches: _.chain($scope.variations)
+          text: $scope.text
+          /*matches: _.chain($scope.variations)
             .filter(function(variation) {
               return variation.active;
             })
             .map(function(variation) {
               return variation.text;
             })
-            .value()
+            .value()*/
         });
       };
 
       Socket.on('get-rows', function(res){
-        console.log(res);
+        //console.log(res);
+        $scope.rows = res.rows;
+        $scope.loading = false;
         $scope.$apply();
       });
 
@@ -128,6 +135,17 @@ app.directive('inspectRow', function(Cellsight, Socket){
           variation.active = false;
         });
       };
+    }
+  };
+});
+
+app.directive('content', function(Cellsight, Socket){
+  return {
+    restrict: 'E',
+    templateUrl: 'client/inspect/table.tpl.html',
+    scope: { titles: "=", rows: "=" },
+    controller: function($scope){
+      //console.log($scope.titles, $scope.rows);
     }
   };
 });

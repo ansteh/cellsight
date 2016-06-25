@@ -1,0 +1,17 @@
+<!--<pre>{{ titles }}</pre>
+<pre>{{ rows }}</pre>-->
+
+<table class="table-bordered" style="width: 4000px;">
+    <thead>
+        <tr>
+            <th style="min-width: 120px;">#</th>
+            <th style="min-width: 120px;" ng-repeat="title in titles">{{ title }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in rows track by $index">
+            <td>{{ $index }}</td>
+            <td ng-repeat="value in row track by $index">{{ value }}</td>
+        </tr>
+    </tbody>
+</table>

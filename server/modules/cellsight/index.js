@@ -37,6 +37,7 @@ const getScheets = (files) => {
 };
 
 const Rows = (rows) => {
+  //console.log(rows);
 
   let getVariationsOfColumn = (title) => {
     return _.chain(rows)
@@ -46,8 +47,24 @@ const Rows = (rows) => {
       .value();
   };
 
+  let getValues = (row, titles) => {
+    let rowTitles = row.getTitles();
+    return _.map(titles, (title) => {
+      let cell = row.getCellByTitle(title);
+      if(cell && _.includes(rowTitles, title)) {
+        return row.getCellByTitle(title).value();
+      }
+      return '';
+    });
+  };
+
+  let getTable = (titles) => {
+    return _.map(rows, row => getValues(row, titles));
+  };
+
   return {
-    getVariationsOfColumn: getVariationsOfColumn
+    getVariationsOfColumn: getVariationsOfColumn,
+    getTable: getTable
   };
 };
 

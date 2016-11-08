@@ -38,3 +38,6 @@ jspm_packages
 
 /**/*.xlsm
 /**/*.XLSM
+
+/**/*.zip
+credentials.json

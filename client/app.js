@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial']);
+var app = angular.module('app', ['ngMaterial', 'ngMessages']);
 
 app.factory('Socket', function(){
   return io();
@@ -28,12 +28,12 @@ app.factory('Cellsight', function(Socket){
     };
   })();
 
-  Socket.emit('train');
-
-  Socket.on('trained', function(response) {
-    console.log('trained', response);
-    //events.publish('/lights', lights);
-  });
+  // Socket.emit('train');
+  //
+  // Socket.on('trained', function(response) {
+  //   console.log('trained', response);
+  //   //events.publish('/lights', lights);
+  // });
 
   Socket.emit('titles');
 
@@ -52,23 +52,16 @@ app.factory('Cellsight', function(Socket){
   };
 });
 
-app.directive('login', function(Cellsight){
-  return {
-    restrict: 'E',
-    template: '<div></div>',
-    scope: {},
-    controller: function($scope){
-
-    }
-  };
-});
-
-app.directive('inspectRow', function(Cellsight, Socket){
+app.directive('inspectRow', function(Cellsight, Socket, User){
   return {
     restrict: 'E',
     templateUrl: 'client/inspect/menu.tpl.html',
     scope: {},
     controller: function($scope){
+      $scope.isVerified = function() {
+        return User.isVerified();
+      };
+      
       $scope.titles = [];
       $scope.title;
       $scope.text = '';

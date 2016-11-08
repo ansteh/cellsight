@@ -1,0 +1,17 @@
+<md-content layout-padding ng-show="!isVerified()">
+  <form name="loginForm">
+    <md-input-container class="md-block">
+      <label>Password</label>
+      <input type="password" required md-no-asterisk name="password" ng-model="password">
+      <div ng-messages="loginForm.password.$error">
+        <div ng-message="required">This is required.</div>
+      </div>
+    </md-input-container>
+  </form>
+  <md-input-container class="md-block">
+    <md-button ng-click="login()" ng-disabled="loginForm.$invalid" class="md-raised md-primary">Login</md-button>
+  </md-input-container>
+</md-content>
+
+<!-- <pre>isVerified: {{ User.isVerified() | json }}</pre> -->
+<inspect-row ng-if="isVerified()"></inspect-row>

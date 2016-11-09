@@ -1,5 +1,5 @@
 app.factory('User', function($http){
-  var verified = false;
+  var verified = true;
 
   var login = function(proposal) {
     return $http.post('/login', { password: proposal })

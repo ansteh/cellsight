@@ -1,17 +1,19 @@
 <!--<pre>{{ titles }}</pre>
 <pre>{{ rows }}</pre>-->
-
-<table class="table-bordered" style="width: 4000px;">
-    <thead>
-        <tr>
-            <th style="min-width: 120px;">#</th>
-            <th style="min-width: 120px;" ng-repeat="title in titles">{{ title }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in rows track by $index">
-            <td>{{ $index }}</td>
-            <td ng-repeat="value in row track by $index">{{ value }}</td>
-        </tr>
-    </tbody>
-</table>
+<!-- <md-content style="max-width: 900px; max-height: 1000px;"> -->
+<md-content layout-fill>
+  <table class="table-bordered" style="max-width: inherit; max-height: 100%;">
+      <thead>
+          <tr>
+              <th style="min-width: 120px;">#</th>
+              <th style="min-width: 120px;" ng-if="contains(title)" ng-repeat="title in titles">{{ title }}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr ng-repeat="row in rows track by $index">
+              <td>{{ $index }}</td>
+              <td ng-if="contains(titles[$index])" ng-repeat="value in row track by $index">{{ value }}</td>
+          </tr>
+      </tbody>
+  </table>
+</md-content>

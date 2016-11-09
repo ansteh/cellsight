@@ -61,15 +61,17 @@ app.directive('inspectRow', function(Cellsight, Socket, User){
       $scope.isVerified = function() {
         return User.isVerified();
       };
-      
+
       $scope.titles = [];
+      $scope.visibleTitles = [];
       $scope.title;
       $scope.text = '';
       $scope.variations = [];
 
       Cellsight.onTitles(function(titles){
-        console.log(titles.length);
         $scope.titles = titles;
+        console.log(titles);
+        $scope.visibleTitles = ["Test Result"];
         $scope.$apply();
       });
 
@@ -87,6 +89,8 @@ app.directive('inspectRow', function(Cellsight, Socket, User){
             text: text
           };
         });
+
+        console.log($scope.variations);
 
         $scope.hideInactives = false;
         $scope.rows = undefined;
@@ -136,9 +140,12 @@ app.directive('content', function(Cellsight, Socket){
   return {
     restrict: 'E',
     templateUrl: 'client/inspect/table.tpl.html',
-    scope: { titles: "=", rows: "=" },
+    scope: { titles: "=", rows: "=", columns: "=" },
     controller: function($scope){
       //console.log($scope.titles, $scope.rows);
+      $scope.contains = function(title) {
+        return _.includes($scope.columns, title);
+      };
     }
   };
 });

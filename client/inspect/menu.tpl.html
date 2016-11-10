@@ -1,44 +1,41 @@
-<br>
+<md-content>
+  <div layout="row" layout-align="center">
+    <md-input-container style="margin-right: 10px;">
+      <label>Suchspalte</label>
+      <md-select ng-model="title">
+        <md-option ng-repeat="option in getColumnNames()" value="{{ option }}">{{ option }}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>Suchbegriff</label>
+      <input md-no-asterisk name="description" ng-model="text">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <md-button ng-click="findRows()" ng-disabled="!title" class="md-raised md-primary">Show</md-button>
+    </md-input-container>
+  </div>
 
-<div layout="row" layout-align="center">
-  <md-input-container style="margin-right: 10px;">
-    <label>Suchspalte</label>
-    <md-select ng-model="title">
-      <md-option ng-repeat="option in titles" value="{{ option }}">{{ option }}</md-option>
-    </md-select>
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>Suchbegriff</label>
-    <input md-no-asterisk name="description" ng-model="text">
-    <!--<input md-maxlength="30" md-no-asterisk name="description" ng-model="text">
-    <!--<div ng-messages="projectForm.description.$error">
-      <div ng-message="required">This is required.</div>
-      <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
-    </div>-->
-  </md-input-container>
-  <md-input-container class="md-block">
-    <md-button ng-click="findRows()" ng-disabled="!title" class="md-raised md-primary">Show</md-button>
-  </md-input-container>
-</div>
+  <div layout="row" layout-align="center">
+    <md-input-container class="md-block">
+      <md-button ng-init="controls = false;" ng-click="controls = !controls;" class="md-raised md-primary">Felder anpassen</md-button>
+    </md-input-container>
+  </div>
 
-<div layout="row" layout-align="center">
-  <md-input-container class="md-block">
-    <md-button ng-init="controls = false;" ng-click="controls = !controls;" class="md-raised md-primary">Felder anpassen</md-button>
-  </md-input-container>
-</div>
+  <md-list ng-show="columns && controls">
+    <md-list-item class="md-2-line" ng-repeat="name in getColumnNames()">
+      <md-checkbox ng-model="columns[$index].visible"></md-checkbox>
+      <div class="md-list-item-text">
+        <p>{{ name }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
 
-<md-list ng-show="titles && controls">
-  <md-list-item class="md-2-line" ng-repeat="title in titles">
-    <md-checkbox ng-model="test" ng-click="toggle(title)"></md-checkbox>
-    <div class="md-list-item-text">
-      <p>{{ title }}</p>
-    </div>
-  </md-list-item>
-</md-list>
+  <div ng-show="loading" layout="row" layout-align="center center">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  </div>
 
-<div ng-show="loading" layout="row" layout-align="center center">
-  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-</div>
+  <content ng-show="rows" columns="columns" rows="rows"></content>
+</md-content>
 
 <!--<div layout="row" ng-show="variations.length > 0">
   <md-input-container flex class="md-block">
@@ -62,5 +59,3 @@
     </div>
   </md-list-item>
 </md-list>-->
-
-<content ng-show="rows" titles="titles" rows="rows" columns="visibleTitles"></content>

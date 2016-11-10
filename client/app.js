@@ -28,13 +28,6 @@ app.factory('Cellsight', function(Socket){
     };
   })();
 
-  // Socket.emit('train');
-  //
-  // Socket.on('trained', function(response) {
-  //   console.log('trained', response);
-  //   //events.publish('/lights', lights);
-  // });
-
   Socket.emit('titles');
 
   Socket.on('titles', function(res){
@@ -62,16 +55,34 @@ app.directive('inspectRow', function(Cellsight, Socket, User){
         return User.isVerified();
       };
 
-      $scope.titles = [];
-      $scope.visibleTitles = [];
+      $scope.columns = [];
       $scope.title;
       $scope.text = '';
       $scope.variations = [];
 
+      $scope.hideAllColumns = function() {
+        _.forEach($scope.columns, function(title) {
+          title.visible = false;
+        });
+      };
+
+      $scope.getColumnNames = function() {
+        return _.map($scope.columns, 'name');
+      };
+
+      $scope.showTitleByName = function(name) {
+        var title = _.find($scope.columns, { name: name });
+        if(title) title.visible = true;
+      };
+
       Cellsight.onTitles(function(titles){
-        $scope.titles = titles;
-        console.log(titles);
-        $scope.visibleTitles = ["Test Result"];
+        $scope.columns = _.map(titles, function(title) {
+          return {
+            name: title,
+            visible: false
+          };
+        });
+        $scope.showTitleByName("Test Result");
         $scope.$apply();
       });
 
@@ -140,12 +151,9 @@ app.directive('content', function(Cellsight, Socket){
   return {
     restrict: 'E',
     templateUrl: 'client/inspect/table.tpl.html',
-    scope: { titles: "=", rows: "=", columns: "=" },
+    scope: { columns: "=", rows: "=" },
     controller: function($scope){
-      //console.log($scope.titles, $scope.rows);
-      $scope.contains = function(title) {
-        return _.includes($scope.columns, title);
-      };
+
     }
   };
 });

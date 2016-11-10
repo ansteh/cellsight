@@ -1,10 +1,9 @@
 app.factory('User', function($http){
-  var verified = true;
+  var verified = false;
 
   var login = function(proposal) {
     return $http.post('/login', { password: proposal })
       .then(function(res) {
-        console.log(res);
         verified = res.data.valid;
       });
   };
